@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>O’Bites Dessert — Order Online</title>
+<style>
+:root{--brown:#4d2415;--pink:#ed4d6b;--pink2:#ffe1e7;--cream:#fffaf7;--line:#e8c9c0;--green:#0aaa58;--muted:#755f59}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--brown);font-family:Arial,Helvetica,sans-serif;background:#fff7f5 url("bacground.png") center top/cover fixed no-repeat}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.page{max-width:1500px;margin:auto;padding:10px}.shell{background:rgba(255,252,250,.94);border:2px solid #bd8b7b;border-radius:22px;overflow:hidden;box-shadow:0 12px 45px #4d241518}
+header{position:relative;text-align:center;padding:12px 20px 14px;min-height:auto}
+.logo{width:145px;height:145px;object-fit:contain;margin:0 auto 10px;display:block}
+.made{max-width:480px;margin:0 auto;border:1px solid #efb9c2;border-radius:18px;padding:11px 14px;background:#fff8f7}
+.made h2{font-size:17px;color:var(--pink);margin:0 0 4px}.made p{font-size:11px;line-height:1.45;margin:3px}.made em{font-family:cursive;color:#d74765;font-size:12px}
+.steps{
+  display:flex;
+  align-items:center;
+  gap:0;
+  padding:10px 14px;
+  margin:0 12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,253,252,.82);
+  overflow:hidden;
+}
+.step{
+  position:relative;
+  flex:1;
+  min-width:120px;
+  text-align:center;
+  padding:9px 7px;
+  border-radius:10px;
+  color:#765e57;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.step::before{
+  content:"";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  margin-right:6px;
+  border:1px solid #d9b9b0;
+  border-radius:50%;
+  background:#fff;
+  color:#8a6b63;
+  font-size:10px;
+  font-weight:800;
+  vertical-align:middle;
+}
+.step:nth-child(1)::before{content:"1"}
+.step:nth-child(2)::before{content:"2"}
+.step:nth-child(3)::before{content:"3"}
+.step:nth-child(4)::before{content:"4"}
+.step:nth-child(5)::before{content:"5"}
+.step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:50%;
+  width:1px;
+  height:24px;
+  background:#ead4cf;
+  transform:translateY(-50%);
+}
+.step.active{
+  background:#fff0f3;
+  color:var(--pink);
+  font-weight:800;
+}
+.step.active::before{
+  background:var(--pink);
+  border-color:var(--pink);
+  color:#fff;
+}
+.step:hover{
+  color:var(--pink);
+  text-decoration:none;
+}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:12px;padding:12px}.title{font-size:22px;margin:2px 0 3px}.subtitle{font-size:11px;color:var(--muted);margin:0 0 10px}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.product{background:#fffdfc;border:1px solid var(--line);border-radius:14px;padding:8px;min-width:0}
+.product h3{text-align:center;font-size:13px;min-height:34px;margin:4px 0 6px}.product-img{width:100%;height:170px;object-fit:contain;background:#fff8f6;border-radius:9px;display:block;padding:4px;box-sizing:border-box}.product-img.ultimate-img{height:155px}.desc{text-align:center;color:#705d57;font-size:9px;line-height:1.4;min-height:37px}
+.sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:6px 0}.size{background:#fff;border:1px solid #efc3c9;border-radius:7px;padding:5px 2px;font-size:9px}.size strong{display:block;font-size:10px}.size span{display:block;color:var(--pink);font-weight:800;margin-top:2px}.size.selected{background:#fff0f3;border:2px solid var(--pink)}
+.qty{display:flex;justify-content:center;align-items:center;gap:14px;margin:5px 0}.qty button{width:26px;height:26px;border:1px solid #e9c2c7;border-radius:50%;background:#fff;color:var(--pink);font-size:17px}.qty b{min-width:14px;text-align:center}
+.toppings{font-size:9px}.topping-title{font-weight:800;margin:4px 0}.topping{display:flex;justify-content:space-between;gap:3px;padding:2px 0}.topping label{display:flex;align-items:center;gap:3px}.topping input{accent-color:var(--pink)}.price{color:var(--pink);font-weight:800;white-space:nowrap}
+.add{width:100%;border:0;border-radius:7px;background:linear-gradient(90deg,#ed3158,#f14f70);color:#fff;font-size:9px;font-weight:800;padding:8px 4px;margin-top:5px}
+.special{display:grid;grid-template-columns:1fr 1.45fr;gap:9px;margin-top:9px}.special .product{display:grid;grid-template-columns:150px 1fr;align-items:center}.special .product-img{height:145px}
+.cart{position:sticky;top:10px;height:max-content;border:1px solid var(--line);border-radius:14px;background:#fffdfc;padding:13px}.cart h2{font-size:16px;margin:0 0 8px}.cart-list{max-height:420px;overflow:auto}.cart-item{position:relative;border-bottom:1px solid #f1dfdb;padding:8px 18px 8px 0;font-size:10px;line-height:1.5}.cart-item strong{display:block;font-size:11px}.remove{position:absolute;right:0;top:7px;border:0;background:none;color:#9a6d64}.summary{font-size:11px;line-height:1.8;margin-top:8px}.sumrow{display:flex;justify-content:space-between}.grand{display:flex;justify-content:space-between;border-top:1px dashed #d8bbb3;margin-top:6px;padding-top:7px;font-size:16px;font-weight:900;color:var(--pink)}
+.green{width:100%;border:0;border-radius:9px;background:var(--green);color:#fff;padding:11px;font-weight:800;margin-top:9px}.pink{width:100%;border:0;border-radius:9px;background:var(--pink);color:#fff;padding:11px;font-weight:800;margin-top:7px}
+.checkout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:0 12px 12px}.panel{border:1px solid var(--line);border-radius:13px;background:#fffdfc;padding:11px}.panel h3{font-size:13px;margin:0 0 8px}.field{margin:7px 0}.field label{display:block;font-size:9px;font-weight:800;margin-bottom:3px}.field input,.field textarea{width:100%;border:1px solid #e6c6c0;border-radius:7px;padding:8px;background:#fff}.field textarea{resize:vertical;min-height:65px}
+.option{display:flex;gap:6px;align-items:flex-start;border-bottom:1px solid #f2e2df;padding:7px 0;font-size:10px}.option img{width:31px;height:31px;object-fit:contain}.option input{accent-color:var(--pink);margin-top:3px}.note{background:#fff0f2;border-radius:8px;padding:7px;font-size:9px;line-height:1.45;margin-top:7px}
+.footer{background:#ffe1e7;text-align:center;padding:10px;font-size:10px}
+.mobilebar{display:none}
+.wa-overlay{position:fixed;inset:0;background:rgba(45,20,12,.62);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+.wa-box{width:min(520px,100%);background:#fffdfc;border-radius:18px;padding:18px;box-shadow:0 20px 60px #0005;position:relative;color:var(--brown)}
+.wa-box h3{margin:0 0 6px;font-size:18px}.wa-help{font-size:11px;color:var(--muted);line-height:1.5}.wa-close{position:absolute;right:10px;top:8px;border:0;background:#fff0f2;color:var(--pink);width:32px;height:32px;border-radius:50%;font-size:22px}
+#waText{width:100%;height:270px;border:1px solid #e6c6c0;border-radius:10px;padding:10px;font-size:11px;line-height:1.5;background:#fff8f6;color:#4d2415;resize:none}
+.wa-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.wa-actions button{margin:0}.wa-box small{display:block;text-align:center;margin-top:7px;color:#7d625a;font-size:10px}
+
+@media(max-width:1100px){.products{grid-template-columns:repeat(2,1fr)}.checkout{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+ body{background:#fff8f6}.page{padding:0}.shell{border:0;border-radius:0;box-shadow:none}
+ header{min-height:auto;padding:8px 10px 14px}.logo{width:115px;height:115px;margin:0 auto 10px}.made{margin:0 4px}.made h2{font-size:15px}
+ .steps{display:none}.main{display:block;padding:9px}.title{font-size:20px}.products{grid-template-columns:1fr 1fr;gap:7px}.product{padding:6px}.product-img{height:145px;padding:5px}.product-img.ultimate-img{height:125px}
+ .product h3{font-size:11px;min-height:30px}.desc{font-size:8px;min-height:43px}.size{font-size:8px}.size strong{font-size:9px}.size span{font-size:9px}.qty{gap:9px}.toppings{font-size:8px}.add{font-size:8px}
+ .special{grid-template-columns:1fr;margin-bottom:72px}.special .product{grid-template-columns:110px 1fr}.special .product-img{height:120px}
+ .cart{position:fixed;display:none;z-index:30;left:8px;right:8px;bottom:66px;top:auto;max-height:65vh;overflow:auto;box-shadow:0 15px 40px #4d241530}.cart.open{display:block}
+ .checkout{grid-template-columns:1fr;padding:9px}.mobilebar{position:fixed;display:flex;left:8px;right:8px;bottom:8px;z-index:40;gap:7px}.mobilebar button{flex:1;border:0;border-radius:12px;padding:11px;font-size:11px;font-weight:800;color:#fff}.mobilebar .cartbtn{background:var(--pink)}.mobilebar .wabtn{background:var(--green)}
+ .footer{padding-bottom:75px}
+}
+</style>
+</head>
+<body>
+<div class="page"><div class="shell">
+<header>
+<img class="logo" src="logo.png" alt="O'Bites Dessert">
+<div class="made">
+<h2>🍓 MADE BY ORDER</h2>
+<p><b>Freshly made, especially for you.</b><br>Dessert dibuat fresh setelah pesanan masuk.<br>Harap pesan minimal <b>2 jam</b> sebelum waktu pengiriman.</p>
+<em>Because every sweet moment deserves something special. ♡</em>
+<p>🚚 <b>Kurir Toko Rp10.000 — seluruh Jogja</b> · Pengantaran mulai 16.00</p>
+</div>
+</header>
+
+<nav class="steps">
+<a class="step active" href="#menu">① Pilih Dessert</a>
+<a class="step" href="#data">② Data Pemesanan</a>
+<a class="step" href="#shipping">③ Pengiriman</a>
+<a class="step" href="#payment">④ Pembayaran</a>
+<a class="step" href="#confirm">⑤ Konfirmasi</a>
+</nav>
+
+<div class="main">
+<main>
+<h1 class="title" id="menu">🍓 PILIH DESSERT</h1>
+<p class="subtitle">Pilih menu, ukuran, jumlah, dan add on toping (opsional).</p>
+<div class="products" id="products"></div>
+<div class="special" id="special"></div>
+</main>
+
+<aside class="cart" id="cart">
+<h2>🛒 RINCIAN PESANAN <span id="count">0</span></h2>
+<div class="cart-list" id="cartList"><div class="note">Keranjang masih kosong. Pilih dessert dulu ya ♡</div></div>
+<div class="summary">
+<div class="sumrow"><span>Subtotal Item</span><b id="sub">Rp0</b></div>
+<div class="sumrow"><span>Total Topping</span><b id="top">Rp0</b></div>
+<div class="sumrow"><span>Ongkir</span><b id="ship">Rp0</b></div>
+<div class="grand"><span>TOTAL SEMENTARA</span><span id="total">Rp0</span></div>
+</div>
+<button class="pink" onclick="go('data')">LANJUT KE DATA PESANAN →</button>
+<button class="green" onclick="sendWA()">💬 KIRIM PESANAN VIA WHATSAPP</button>
+</aside>
+</div>
+
+<section class="checkout">
+<div class="panel" id="data">
+<h3>② DATA PEMESANAN</h3>
+<div class="field"><label>TANGGAL PENGIRIMAN / PENGAMBILAN</label><input id="date" type="date"></div>
+<div class="field"><label>NAMA LENGKAP</label><input id="name" type="text" placeholder="Masukkan nama lengkap"></div>
+<div class="field"><label>NO. WHATSAPP</label><input id="phone" type="tel" placeholder="08xxxxxxxxxx"></div>
+<div class="field"><label>CATATAN (OPSIONAL)</label><textarea id="note" placeholder="Contoh: tanpa kacang, ucapan, dll."></textarea></div>
+<button class="pink" onclick="go('shipping')">LANJUT KE PENGIRIMAN →</button>
+</div>
+
+<div class="panel" id="shipping">
+<h3>③ PILIH PENGIRIMAN</h3>
+<label class="option"><input type="radio" name="shipping" value="pickup" checked> 🏪 <span><b>AMBIL SENDIRI</b><br>Rp0</span></label>
+<label class="option"><input type="radio" name="shipping" value="store"> 🚚 <span><b>KURIR TOKO O’BITES</b><br>Rp10.000 · mulai 16.00</span></label>
+<label class="option"><input type="radio" name="shipping" value="gojek"> <img src="gojek.png"><span><b>GOJEK</b><br>Ongkir sesuai tarif aplikasi</span></label>
+<label class="option"><input type="radio" name="shipping" value="grab"> <img src="grab.png"><span><b>GRAB</b><br>Ongkir sesuai tarif aplikasi</span></label>
+<label class="option"><input type="radio" name="shipping" value="shopee"> 🟠 <span><b>SHOPEE</b><br>Ongkir sesuai tarif merchant</span></label>
+<label class="option"><input type="radio" name="shipping" value="maxim"> <img src="maxim.png"><span><b>MAXIM</b><br>Ongkir sesuai tarif aplikasi</span></label>
+<label class="option"><input type="radio" name="shipping" value="paxel"> <img src="paxel.png"><span><b>PAXEL</b><br>Ongkir sesuai tarif aplikasi</span></label>
+<div class="note">Kurir Toko: pengantaran mulai 16.00. Selain jam 16.00 konfirmasi terlebih dahulu. Ongkir merchant lain dikonfirmasi sebelum pembayaran.</div>
+<button class="pink" onclick="go('payment')">LANJUT KE PEMBAYARAN →</button>
+</div>
+
+<div class="panel" id="payment">
+<h3>④ PILIH PEMBAYARAN</h3>
+<label class="option"><input type="radio" name="payment" value="QRIS" checked> <b>QRIS</b><br><small>QRIS dikirim setelah pesanan dikonfirmasi.</small></label>
+<label class="option"><input type="radio" name="payment" value="Bayar Saat Diambil"> <b>BAYAR SAAT DIAMBIL</b><br><small>Khusus Ambil Sendiri.</small></label>
+<label class="option"><input type="radio" name="payment" value="COD"> <b>COD (CASH ON DELIVERY)</b><br><small>Khusus Kurir Toko O’Bites.</small></label>
+<div class="note">Pembayaran dilakukan setelah pesanan dikonfirmasi. Jangan melakukan pembayaran sebelum mendapat konfirmasi total dari O’Bites.</div>
+<button class="pink" onclick="go('confirm')">LANJUT KE KONFIRMASI →</button>
+</div>
+
+<div class="panel" id="confirm">
+<h3>⑤ KONFIRMASI PESANAN</h3>
+<div id="confirmBox" class="note">Pilih dessert dan lengkapi data pemesanan.</div>
+<button class="green" onclick="sendWA()">💬 KIRIM PESANAN VIA WHATSAPP</button>
+</div>
+</section>
+<div class="footer">O’Bites Dessert by Nadine ❤️ · Terima kasih sudah mempercayai O’Bites Dessert ❤️</div>
+</div></div>
+
+<div class="mobilebar">
+<button class="cartbtn" onclick="toggleCart()">🛒 KERANJANG <span id="mcount">0</span></button>
+<button class="wabtn" onclick="sendWA()">💬 WHATSAPP</button>
+</div>
+
+<script>
+const WA="https://wa.me/6287777728588";
+const P=[
+{id:"berry",name:"Berry Choco Cup",img:"berry.png",desc:"Fresh strawberry dipped in premium chocolate sauce",sizes:[["S","10 oz",15000],["REG","12 oz",20000],["LARGE","14 oz",25000]],tops:[["Kunafa Pistachio 15 gr",7000],["Dubai Chewy Cookie",20000],["Marshmellow",5000]]},
+{id:"muscat",name:"Mix Berry Muscat Choco Cup",img:"muscat.png",desc:"Fresh strawberry & muscat grape in premium chocolate sauce",sizes:[["S","10 oz",20000],["REG","12 oz",25000],["LARGE","14 oz",30000]],tops:[["Kunafa Pistachio 15 gr",7000],["Dubai Chewy Cookie",20000],["Marshmellow",5000]]},
+{id:"banana",name:"Mix Berry Banana Choco Cup",img:"banana.png",desc:"Fresh strawberry & banana sliced drizzled in premium chocolate sauce",sizes:[["S","10 oz",15000],["REG","12 oz",20000],["LARGE","14 oz",25000]],tops:[["Kunafa Pistachio 15 gr",7000],["Dubai Chewy Cookie",20000],["Marshmellow",5000]]},
+{id:"ultimate",name:"Ultimate Dubai Dessert Cup",img:"ultimate.png",desc:"Mix strawberry, muscat grape & banana, kataifi pistachio, premium chocolate sauce, topped with Dubai chewy cookie",sizes:[["S","10 oz",35000],["REG","12 oz",40000],["LARGE","14 oz",45000]],tops:[["Kunafa Pistachio 15 gr",7000],["Dubai Chewy Cookie",20000],["Marshmellow",5000]]},
+{id:"cookie",name:"Dubai Chewy Cookie",img:"dubai-chewy-cookie.jpg",desc:"Crunchy outside, chewy inside",price:20000,tops:[]},
+{id:"kataifi",name:"Kataifi Pistachio Spread 50gr",img:"kataifi pistachio spread.png",desc:"Premium pistachio spread",price:15000,tops:[["Sauce Coklat 30ml",7000],["Marshmellow Panggang",7000]]}
+];
+const S={}, CART=[]; P.forEach(p=>S[p.id]={size:1,qty:1});
+const rp=n=>"Rp"+Number(n).toLocaleString("id-ID");
+const productHTML=(p,i)=>p.sizes?`<article class="product">
+<h3>${i+1}. ${p.name.toUpperCase()}</h3><img class="product-img ${p.id==='ultimate'?'ultimate-img':''}" src="${p.img}" alt="${p.name}"><div class="desc">${p.desc}</div>
+<div class="sizes">${p.sizes.map((s,j)=>`<button class="size ${j===1?"selected":""}" onclick="size('${p.id}',${j},this)"><strong>${s[0]}</strong>${s[1]}<span>${rp(s[2])}</span></button>`).join("")}</div>
+<div class="qty"><button onclick="qty('${p.id}',-1)">−</button><b id="q-${p.id}">1</b><button onclick="qty('${p.id}',1)">+</button></div>
+<div class="toppings"><div class="topping-title">ADD ON TOPING (OPSIONAL)</div>${p.tops.map((t,j)=>`<div class="topping"><label><input type="checkbox" id="${p.id}-t${j}"> ${t[0]}</label><span class="price">+${rp(t[1])}</span></div>`).join("")}</div>
+<button class="add" onclick="add('${p.id}')">＋ MASUKAN KE KERANJANG</button></article>`:
+`<article class="product"><h3>${i+1}. ${p.name.toUpperCase()}</h3><img class="product-img ${p.id==='ultimate'?'ultimate-img':''}" src="${p.img}" alt="${p.name}"><div class="desc">${p.desc}</div><div style="text-align:center;font-weight:800;color:var(--pink);margin:7px">${rp(p.price)}</div><div class="qty"><button onclick="qty('${p.id}',-1)">−</button><b id="q-${p.id}">1</b><button onclick="qty('${p.id}',1)">+</button></div><div class="note">Tanpa topping</div><button class="add" onclick="add('${p.id}')">＋ MASUKAN KE KERANJANG</button></article>`;
+document.getElementById("products").innerHTML=P.slice(0,4).map(productHTML).join("");
+document.getElementById("special").innerHTML=P.slice(4).map((p,i)=>`<div class="product">${productHTML(p,i+4).replace('<article class="product">','').replace('</article>','')}</div>`).join("");
+
+function qty(id,d){S[id].qty=Math.max(1,S[id].qty+d);document.getElementById("q-"+id).textContent=S[id].qty}
+function size(id,j,b){S[id].size=j;b.parentElement.querySelectorAll(".size").forEach(x=>x.classList.remove("selected"));b.classList.add("selected")}
+function tops(p){return p.tops.map((t,j)=>document.getElementById(p.id+"-t"+j)?.checked?t:null).filter(Boolean)}
+function add(id){const p=P.find(x=>x.id===id),q=S[id].qty||1;for(let i=0;i<q;i++)CART.push({p,size:p.sizes?p.sizes[S[id].size]:null,tops:tops(p)});render();document.getElementById("cart").classList.add("open")}
+function remove(i){CART.splice(i,1);render()}
+function render(){
+let sub=0,top=0;
+document.getElementById("count").textContent=CART.length;document.getElementById("mcount").textContent=CART.length;
+document.getElementById("cartList").innerHTML=CART.length?CART.map((x,i)=>{let t=x.tops.reduce((a,z)=>a+z[1],0),b=x.size?x.size[2]:x.p.price;sub+=b;top+=t;return `<div class="cart-item"><button class="remove" onclick="remove(${i})">✕</button><strong>${i+1}. ${x.p.name}</strong>${x.size?x.size[0]+" ("+x.size[1]+")<br>":""}${x.tops.length?"Topping: "+x.tops.map(z=>z[0]).join(", ")+"<br>":""}x1 <span style="float:right">${rp(b+t)}</span></div>`}).join(""):'<div class="note">Keranjang masih kosong. Pilih dessert dulu ya ♡</div>';
+const sh=shippingCost();document.getElementById("sub").textContent=rp(sub);document.getElementById("top").textContent=rp(top);document.getElementById("ship").textContent=sh.label;document.getElementById("total").textContent=rp(sub+top+sh.cost);confirmBox(sub,top,sh.cost);
+}
+function shippingCost(){let v=document.querySelector('input[name="shipping"]:checked')?.value||"pickup";return v==="store"?{cost:10000,label:rp(10000)}:{cost:0,label:v==="pickup"?rp(0):"Sesuai aplikasi"}}
+function confirmBox(sub,top,ship){
+let lines=CART.map((x,i)=>`${i+1}. ${x.p.name}${x.size?" — "+x.size[0]+" ("+x.size[1]+")":""}${x.tops.length?" · Topping: "+x.tops.map(z=>z[0]).join(", "):""}`);
+let shipName=document.querySelector('input[name="shipping"]:checked')?.value||"pickup", pay=document.querySelector('input[name="payment"]:checked')?.value||"QRIS";
+document.getElementById("confirmBox").innerHTML=`${lines.length?lines.join("<br>"):"Belum ada item"}<hr>Nama: ${document.getElementById("name").value||"—"}<br>Tanggal: ${document.getElementById("date").value||"—"}<br>Pengiriman: ${shipName}<br>Pembayaran: ${pay}<br><b>Total sementara: ${rp(sub+top+ship)}</b>`;
+}
+document.addEventListener("change",e=>{if(e.target.name==="shipping"||e.target.name==="payment"){render()}});
+["date","name","phone","note"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("date").min=new Date().toISOString().slice(0,10);
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+function toggleCart(){document.getElementById("cart").classList.toggle("open")}
+function buildOrderMessage(){
+const name=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const date=document.getElementById("date").value||"-";
+const note=document.getElementById("note").value.trim();
+const sh=shippingCost();
+const ship=document.querySelector('input[name="shipping"]:checked')?.value||"pickup";
+const pay=document.querySelector('input[name="payment"]:checked')?.value||"QRIS";
+
+let sub=0, top=0;
+const lines=CART.map((x,i)=>{
+  const b=x.size?x.size[2]:x.p.price;
+  const t=x.tops.reduce((a,z)=>a+z[1],0);
+  sub+=b; top+=t;
+  return `${i+1}. ${x.p.name}${x.size?" — "+x.size[0]+" ("+x.size[1]+")":""} x1${x.tops.length?" | Topping: "+x.tops.map(z=>z[0]).join(", "):""} = ${rp(b+t)}`;
+});
+
+return `Halo O’Bites Dessert ♡
+
+Saya mau pesan:
+${lines.join("\n")}
+
+Nama: ${name}
+No. WhatsApp: ${phone}
+Tanggal: ${date}
+Pengiriman: ${ship}
+Pembayaran: ${pay}
+Subtotal item: ${rp(sub)}
+Total topping: ${rp(top)}
+Ongkir: ${sh.cost?rp(sh.cost):sh.label}
+TOTAL SEMENTARA: ${rp(sub+top+sh.cost)}${note?"\nCatatan: "+note:""}
+
+Mohon konfirmasi pesanan saya. Terima kasih ♡`;
+}
+
+function showOrderModal(msg){
+let old=document.getElementById("waModal");
+if(old) old.remove();
+
+const modal=document.createElement("div");
+modal.id="waModal";
+modal.innerHTML=`
+<div class="wa-overlay">
+  <div class="wa-box">
+    <button class="wa-close" onclick="document.getElementById('waModal').remove()">×</button>
+    <h3>💬 Pesanan O’Bites Siap</h3>
+    <p class="wa-help">Tekan <b>Salin Pesanan</b>, lalu buka WhatsApp dan paste pesan ini.</p>
+    <textarea id="waText" readonly></textarea>
+    <div class="wa-actions">
+      <button class="green" id="copyWA">📋 SALIN PESANAN</button>
+      <button class="pink" id="openWA">💬 BUKA WHATSAPP</button>
+    </div>
+    <small id="copyStatus">Pesan belum disalin.</small>
+  </div>
+</div>`;
+document.body.appendChild(modal);
+document.getElementById("waText").value=msg;
+
+document.getElementById("copyWA").onclick=async()=>{
+  const ta=document.getElementById("waText");
+  ta.focus(); ta.select(); ta.setSelectionRange(0,ta.value.length);
+  let ok=false;
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(ta.value); ok=true;
+    }
+  }catch(e){}
+  if(!ok){
+    try{ ok=document.execCommand("copy"); }catch(e){}
+  }
+  document.getElementById("copyStatus").textContent=ok
+    ?"✅ Pesanan berhasil disalin. Sekarang tekan Buka WhatsApp."
+    :"⚠️ Salin otomatis diblokir browser. Tekan lama pada teks → Salin.";
+};
+
+document.getElementById("openWA").onclick=()=>{
+  window.open(WA,"_blank");
+};
+}
+
+function sendWA(){
+if(!CART.length){alert("Pilih dessert terlebih dahulu ya ♡");return}
+
+const name=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+
+if(!name||!phone){
+alert("Nama dan No. WhatsApp wajib diisi ya ♡");
+go("data");
+return;
+}
+
+const msg=buildOrderMessage();
+const waUrl=WA+"?text="+encodeURIComponent(msg);
+
+/* Langsung buka WhatsApp dengan pesan pesanan sudah terisi. */
+window.location.href=waUrl;
+}
+render();
+</script>
+</body>
+</html>
